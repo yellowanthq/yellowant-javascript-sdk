@@ -7,12 +7,11 @@ import uglify from 'rollup-plugin-uglify';
 var env = process.env.NODE_ENV
 var config = {
   format: 'umd',
-  moduleName: 'LiteRouter',
+  moduleName: 'yellowant-sdk',
   plugins: [
     nodeResolve({
       jsnext: true
     }),
-    // due to https://github.com/rollup/rollup/wiki/Troubleshooting#name-is-not-exported-by-module
     commonjs({
       include: 'node_modules/**',
       namedExports: { './node_module/invariant.js': ['default'] }
