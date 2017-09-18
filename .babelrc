@@ -5,7 +5,8 @@
         ["env", {
           "useBuiltIns": false
         }]
-      ]
+      ],
+      "plugins": ["transform-class-properties"]
     },
     "es": {
       "presets": [
@@ -13,7 +14,8 @@
           "useBuiltIns": false,
           "modules": false
         }]
-      ]
+      ],
+      "plugins": ["transform-class-properties"]
     }
   }
 }
