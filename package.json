@@ -24,7 +24,7 @@
     "node": ">=4.2.0"
   },
   "pre-commit": [
-    "test"
+    
   ],
   "scripts": {
     "build": "npm run build:commonjs && npm run build:umd && npm run build:umd:min && npm run build:es",
