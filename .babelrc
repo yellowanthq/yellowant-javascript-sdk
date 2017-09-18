@@ -6,7 +6,10 @@
           "useBuiltIns": false
         }]
       ],
-      "plugins": ["transform-class-properties"]
+      "plugins": [
+        "external-helpers",
+        "transform-class-properties"
+      ]
     },
     "es": {
       "presets": [
@@ -15,7 +18,10 @@
           "modules": false
         }]
       ],
-      "plugins": ["transform-class-properties"]
+      "plugins": [
+        "external-helpers",
+        "transform-class-properties"
+      ]
     }
   }
 }

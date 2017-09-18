@@ -6,8 +6,10 @@ import uglify from 'rollup-plugin-uglify';
 
 var env = process.env.NODE_ENV
 var config = {
-  format: 'umd',
-  moduleName: 'yellowant-sdk',
+  output: {
+    format: 'umd'
+  },
+  name: 'yellowant-sdk',
   plugins: [
     nodeResolve({
       jsnext: true
