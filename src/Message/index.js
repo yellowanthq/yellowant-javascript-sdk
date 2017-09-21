@@ -36,21 +36,21 @@ export default class Message {
     }
   }
   
-  getPayload = () => ({
-    attachments: this.attachments.map(attachment => this.prepareAttachmentPayload(attachment)),
+  toJSON = () => ({
+    attachments: this.attachments.map(attachment => this.prepareAttachmentJSON(attachment)),
     data: this.data,
     error: this.error,
     logs: this.logs,
     message_text: this.text
   })
 
-  prepareAttachmentPayload = (attachment) => ({
+  prepareAttachmentJSON = (attachment) => ({
     author_icon: attachment.authorIcon,
     author_link: attachment.authorLink,
     author_name: attachment.authorName,
-    buttons: attachment.buttons.map(attachmentButton => this.prepareAttachmentButtonPayload(attachmentButton)),
+    buttons: attachment.buttons.map(attachmentButton => this.prepareAttachmentButtonJSON(attachmentButton)),
     color: attachment.color,
-    fields: attachment.fields.map(attachmentField => this.prepareAttachmentFieldPayload(attachmentField)),
+    fields: attachment.fields.map(attachmentField => this.prepareAttachmentFieldJSON(attachmentField)),
     footer: attachment.footer,
     footer_icon: attachment.footerIcon,
     image_url: attachment.imageUrl,
@@ -63,13 +63,13 @@ export default class Message {
     ts: attachment.ts
   })
 
-  prepareAttachmentFieldPayload = (attachmentField) => ({
+  prepareAttachmentFieldJSON = (attachmentField) => ({
     short: attachmentField.short,
     title: attachmentField.title,
     value: attachmentField.value
   })
 
-  prepareAttachmentButtonPayload = (attachmentButton) => ({
+  prepareAttachmentButtonJSON = (attachmentButton) => ({
     command: attachmentButton.command,
     name: attachmentButton.name,
     text: attachmentButton.text,
