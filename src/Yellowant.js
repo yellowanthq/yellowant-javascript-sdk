@@ -49,25 +49,40 @@ export default class Yellowant {
       }
     };
 
-    return fetch(`${this.apiUrl}${endpoint}`, options).then(response => response.json());
+    return fetch(`${this.apiUrl}${endpoint}`, options).then(response => {
+      if (!response.ok) throw response;
+      return response.json();
+    });
   }
 
-  _post = (endpoint, data = {}, contentType = "application/x-www-form-urlencoded") => {
-    const bodyData = new URLSearchParams();
-    Object.keys(data).forEach(key => bodyData.set(key, data[key]));
-    bodyData.set("access_token", this.accessToken);
+  _post = (endpoint, payload = {}, contentType = "application/json") => {
+    let body;
+    const headers = { "Content-Type": contentType };
+    if (contentType === "application/x-www-form-urlencoded") {
+      const bodyData = new URLSearchParams();
+      Object.keys(payload).forEach(key => bodyData.set(key, payload[key]));
+      bodyData.set("access_token", this.accessToken);
+      body = bodyData.toString();
+    } else {
+      body = JSON.stringify(payload);
+      headers.Authorization = `Bearer ${this.accessToken}`;
+    }
+
     const options = {
       method: "post",
-      body: bodyData.toString(),
-      headers: { "Content-Type": contentType }
+      body,
+      headers
     };
 
-    return fetch(`${this.apiUrl}${endpoint}`, options).then(response => response.json());
+    return fetch(`${this.apiUrl}${endpoint}`, options).then(response => {
+      if (!response.ok) throw response;
+      return response.json();
+    });
   }
 
   getUserProfile = () => this._get("user/profile/")
 
-  createUserIntegration = () => this._post("user/integration/")
+  createUserIntegration = () => this._post("user/integration/", {}, "application/x-www-form-urlencoded")
 
   getAccessToken = (code) => {
     const data = {
@@ -78,10 +93,23 @@ export default class Yellowant {
       redirect_uri: this.redirectUri
     };
 
-    this._post("oauth2/token/", data)
+    this._post("oauth2/token/", data, "application/x-www-form-urlencoded")
       .then(response => {
         this.accessToken = response.access_token;
       });
   }
+
+  sendMessage = (yellowantIntegrationId, message) =>
+    this._post("user/message/", {
+      ...message,
+      requester_application: yellowantIntegrationId
+    })
+  
+  sendWebhookMessage = (yellowantIntegrationId, webhookSubscriptionId, message) =>
+    this._post(`user/application/webhook/${webhookSubscriptionId}/`, {
+      ...message,
+      webhook_id: webhookSubscriptionId,
+      requester_application: yellowantIntegrationId
+    })
 }
 
