@@ -3,7 +3,6 @@
   "rules": {
     "max-len": 0,
     "comma-dangle": 0,
-    "brace-style": [2, "stroustrup"],
     "no-console": 0,
     "padded-blocks": 0,
     "indent": [2, 2, {"SwitchCase": 1}],
