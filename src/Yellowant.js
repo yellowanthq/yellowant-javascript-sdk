@@ -4,8 +4,10 @@
  * @author Manik Singh <maniksingh92@gmail.com>
  */
 const {
-  Request
+  fetch
 } = require("fetch-ponyfill")();
+
+const URLSearchParams = URLSearchParams || require("url").URLSearchParams; // eslint-disable-line no-use-before-define global-require
 
 
 export default class Yellowant {
@@ -35,30 +37,51 @@ export default class Yellowant {
     this.appKey = appKey;
     this.appSecret = appSecret;
     this.redirectUri = redirectUri;
-
-
   }
 
-  getAccessToken = (code) => {
+  _get = (endpoint, data = {}) => {
     const options = {
-      method: "post",
-      body: JSON.stringify({
-        grant_type: "authorization_code",
-        client_id: this.appKey,
-        client_secret: this.appSecret,
-        code,
-        redirect_uri: this.redirectUri
-      }),
+      method: "get",
+      body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.accessToken}`
       }
     };
 
-    const request = new Request(`${this.apiUrl}oauth/request_token`, options);
-    request
-      .then(response => response.json())
-      .then(resp => {
-        console.log(resp);
+    return fetch(`${this.apiUrl}${endpoint}`, options).then(response => response.json());
+  }
+
+  _post = (endpoint, data = {}, contentType = "application/x-www-form-urlencoded") => {
+    const bodyData = new URLSearchParams();
+    Object.keys(data).forEach(key => bodyData.set(key, data[key]));
+    bodyData.set("access_token", this.accessToken);
+    const options = {
+      method: "post",
+      body: bodyData.toString(),
+      headers: { "Content-Type": contentType }
+    };
+
+    return fetch(`${this.apiUrl}${endpoint}`, options).then(response => response.json());
+  }
+
+  getUserProfile = () => this._get("user/profile/")
+
+  createUserIntegration = () => this._post("user/integration/")
+
+  getAccessToken = (code) => {
+    const data = {
+      grant_type: "authorization_code",
+      client_id: this.appKey,
+      client_secret: this.appSecret,
+      code,
+      redirect_uri: this.redirectUri
+    };
+
+    this._post("oauth2/token/", data)
+      .then(response => {
+        this.accessToken = response.access_token;
       });
   }
 }
+
