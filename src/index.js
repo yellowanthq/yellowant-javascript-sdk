@@ -11,9 +11,9 @@ import MessageAttachmentButton from "./Message/MessageAttachmentButton";
 import MessageAttachmentField from "./Message/MessageAttachmentField";
 
 export default {
-  Yellowant,
-  Message,
-  MessageAttachment,
-  MessageAttachmentButton,
-  MessageAttachmentField
+  Yellowant, // Base SDK for interacting with the YellowAnt API
+  Message, // Message building class
+  MessageAttachment, // Attachment for a Message class object, addAttachment()
+  MessageAttachmentButton, // Buttons for a MessageAttachment class object, addButton()
+  MessageAttachmentField, // Data field for a MessageAttachment class object, addField()
 };
