@@ -37,7 +37,7 @@ yarn run build:commonjs:watch # build:umd:watch or build:es:watch
 
 ## Simple Example
 
-```
+```javascript
 // import all SDK exports
 var sdk = require("yellowant-sdk");
 
