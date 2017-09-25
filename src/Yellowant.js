@@ -39,6 +39,15 @@ export default class Yellowant {
     this.redirectUri = redirectUri;
   }
 
+  /**
+   * GET call wrapper
+   * @private
+   * 
+   * @param {string} endpoint The API url suffix
+   * @param {Object} data Any data to be sent in the body of the request
+   * 
+   * @return {Promise} Return a fetch promise
+   */
   _get = (endpoint, data = {}) => {
     const options = {
       method: "get",
@@ -55,6 +64,16 @@ export default class Yellowant {
     });
   }
 
+  /**
+   * POST call wrapper
+   * @private
+   * 
+   * @param {string} endpoint The API url suffix
+   * @param {Object} payload Any data to be sent in the body of the request
+   * @param {string} contentType The content type for the request
+   * 
+   * @return {Promise} Return a fetch promise
+   */
   _post = (endpoint, payload = {}, contentType = "application/json") => {
     let body;
     const headers = { "Content-Type": contentType };
@@ -80,10 +99,14 @@ export default class Yellowant {
     });
   }
 
-  getUserProfile = () => this._get("user/profile/")
-
-  createUserIntegration = () => this._post("user/integration/", {}, "application/x-www-form-urlencoded")
-
+  /**
+   * Get the user access token to perform operations on behalf of the YellowAnt user
+   * @public
+   * 
+   * @param {string} code Code from the OAuth authentication flow of YellowAnt
+   * 
+   * @return {Promise} Response containing the access token data
+   */
   getAccessToken = (code) => {
     const data = {
       grant_type: "authorization_code",
@@ -99,12 +122,47 @@ export default class Yellowant {
       });
   }
 
+  /**
+   * Get the user profile for the access token
+   * @public
+   * 
+   * @return {Promise} Response containing the user profile data
+   */
+  getUserProfile = () => this._get("user/profile/")
+
+  /**
+   * Create a new integration with the user access token
+   * @public
+   * 
+   * @return {Promise} Response containing the new created user integration data
+   */
+  createUserIntegration = () => this._post("user/integration/", {}, "application/x-www-form-urlencoded")
+
+  /**
+   * Send a message for a user to all chat interface through YellowAnt
+   * @public
+   * 
+   * @param {number} yellowantIntegrationId The YellowAnt user integration ID
+   * @param {Object} message An object built from the toJSON() method of a Message class instance
+   * 
+   * @return {Promise} Response containing the successfully created message through YellowAnt
+   */
   sendMessage = (yellowantIntegrationId, message) =>
     this._post("user/message/", {
       ...message,
       requester_application: yellowantIntegrationId
     })
   
+  /**
+   * Send data and any optional message for a crumb workflow to YellowAnt
+   * @public
+   * 
+   * @param {number} yellowantIntegrationId The YellowAnt user integration ID
+   * @param {}
+   * @param {Object} message An object built from the toJSON() method of a Message class instance
+   * 
+   * @return {Promise} Response from the YellowAnt server
+   */
   sendWebhookMessage = (yellowantIntegrationId, webhookSubscriptionId, message) =>
     this._post(`user/application/webhook/${webhookSubscriptionId}/`, {
       ...message,
@@ -112,4 +170,3 @@ export default class Yellowant {
       requester_application: yellowantIntegrationId
     })
 }
-
