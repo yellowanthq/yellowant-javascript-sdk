@@ -63,12 +63,24 @@ export default class MessageAttachment {
     this.ts = ts;
   }
 
+  /**
+   * Add a field to the attachment
+   * @public
+   * 
+   * @param {MessageAttachmentField} attachmentField MessageAttachmentField instance
+   */
   addField = (attachmentField) => {
     if (attachmentField instanceof MessageAttachmentField) {
       this.fields.push(attachmentField);
     }
   }
 
+  /**
+   * Add a button to the attachment
+   * @public
+   * 
+   * @param {MessageAttachmentButton} attachmentButton MessageAttachmentButton instance
+   */
   addButton = (attachmentButton) => {
     if (attachmentButton instanceof MessageAttachmentButton) {
       this.buttons.push(attachmentButton);
