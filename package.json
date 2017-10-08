@@ -1,6 +1,6 @@
 {
   "name": "yellowant-sdk",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "YellowAnt SDK for building an application for the YellowAnt ecosystem on a javascript platform",
   "main": "lib/index.js",
   "module": "es/index.js",
