@@ -79,17 +79,11 @@ export default class Yellowant {
   _post = (endpoint, payload = {}, contentType = "application/json") => {
     let body;
     const headers = { "Content-Type": contentType };
-    if (contentType === "application/x-www-form-urlencoded") {
-      //const bodyData = new URLSearchParams();
-      
-      //Object.keys(payload).forEach(key => bodyData.set(key, payload[key]));
-      //bodyData.set("access_token", this.accessToken);
-
+    if (contentType === "application/x-www-form-urlencoded") {      
       body = querystring.stringify({
         ...payload,
         access_token: this.accessToken
       });
-      //body = bodyData.toString();
     } else {
       body = JSON.stringify(payload);
       headers.Authorization = `Bearer ${this.accessToken}`;
