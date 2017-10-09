@@ -84,8 +84,11 @@ export default class Yellowant {
       
       //Object.keys(payload).forEach(key => bodyData.set(key, payload[key]));
       //bodyData.set("access_token", this.accessToken);
-      payload.access_token = this.accessToken;
-      body = querystring.stringify(payload);
+
+      body = querystring.stringify({
+        ...payload,
+        access_token: this.accessToken
+      });
       //body = bodyData.toString();
     } else {
       body = JSON.stringify(payload);
