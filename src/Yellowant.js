@@ -7,7 +7,9 @@ const {
   fetch
 } = require("fetch-ponyfill")();
 
-const URLSearchParams = URLSearchParams || require("url").URLSearchParams; // eslint-disable-line no-use-before-define global-require
+const querystring = require("querystring");
+
+//const URLSearchParams = URLSearchParams || require("url").URLSearchParams; // eslint-disable-line no-use-before-define global-require
 
 
 export default class Yellowant {
@@ -78,10 +80,13 @@ export default class Yellowant {
     let body;
     const headers = { "Content-Type": contentType };
     if (contentType === "application/x-www-form-urlencoded") {
-      const bodyData = new URLSearchParams();
-      Object.keys(payload).forEach(key => bodyData.set(key, payload[key]));
-      bodyData.set("access_token", this.accessToken);
-      body = bodyData.toString();
+      //const bodyData = new URLSearchParams();
+      
+      //Object.keys(payload).forEach(key => bodyData.set(key, payload[key]));
+      //bodyData.set("access_token", this.accessToken);
+      //payload.access_token = this.accessToken;
+      body = querystring.stringify(payload);
+      //body = bodyData.toString();
     } else {
       body = JSON.stringify(payload);
       headers.Authorization = `Bearer ${this.accessToken}`;
