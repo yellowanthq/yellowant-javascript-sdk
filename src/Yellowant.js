@@ -127,7 +127,7 @@ export default class Yellowant {
     return this._post("oauth2/token/", data, "application/x-www-form-urlencoded")
       .then(response => {
         this.accessToken = response.access_token;
-        return this.accessToken;
+        return response;
       });
   }
 
@@ -157,7 +157,7 @@ export default class Yellowant {
    * @return {Promise} Response containing the successfully created message through YellowAnt
    */
   sendMessage = (yellowantIntegrationId, message) =>
-    return this._post("user/message/", {
+    this._post("user/message/", {
       ...message,
       requester_application: yellowantIntegrationId
     })
@@ -173,7 +173,7 @@ export default class Yellowant {
    * @return {Promise} Response from the YellowAnt server
    */
   sendWebhookMessage = (yellowantIntegrationId, webhookSubscriptionId, message) =>
-    return this._post(`user/application/webhook/${webhookSubscriptionId}/`, {
+    this._post(`user/application/webhook/${webhookSubscriptionId}/`, {
       ...message,
       webhook_id: webhookSubscriptionId,
       requester_application: yellowantIntegrationId
